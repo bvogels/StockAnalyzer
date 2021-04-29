@@ -1,5 +1,7 @@
 package stockanalyzer.ctrl;
 
+import yahooApi.YahooFinance;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,11 @@ public class Controller {
 
 		/* I think the data type we are looking for here is the YahooResponse.
 		* 1. Put data into a list. */
+		List<String> stockSelection = new ArrayList<>();
+		stockSelection.add(ticker);
+		YahooFinance newQuery = new YahooFinance();
+		String query = newQuery.requestData(stockSelection);
+		System.out.println(query);
 
 
 		//1) Daten laden
