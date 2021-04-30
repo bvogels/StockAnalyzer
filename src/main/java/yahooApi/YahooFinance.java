@@ -77,6 +77,8 @@ public class YahooFinance {
         return jo;
     }
 
+    /* This method is currently not used */
+
     public void fetchAssetName(Asset asset) {
         YahooFinance yahoo = new YahooFinance();
         List<String> symbols = new ArrayList<>();

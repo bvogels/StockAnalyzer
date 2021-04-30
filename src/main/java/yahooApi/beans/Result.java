@@ -29,7 +29,6 @@ public class Result {
 
     @JsonProperty("language")
     private String language;
-
     @JsonProperty("region")
     private String region;
     @JsonProperty("quoteType")

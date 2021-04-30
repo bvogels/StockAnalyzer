@@ -47,9 +47,9 @@ public class UserInterface
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitle("Choose an option:");
-		menu.insert("a", "Choice 1", this::getDataFromCtrl1);
-		menu.insert("b", "Choice 2", this::getDataFromCtrl2);
-		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
+		menu.insert("a", "Twitter (TWTR)", this::getDataFromCtrl1);
+		menu.insert("b", "ebay (EBAY)", this::getDataFromCtrl2);
+		menu.insert("c", "Kraft Heinz Company (KHC)", this::getDataFromCtrl3);
 		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
 		menu.insert("z", "Choice User Input:",this::getDataFromCtrl4);
 		menu.insert("q", "Quit", null);
@@ -100,5 +100,9 @@ public class UserInterface
 			}
 		}
 		return number;
+	}
+
+	public static void displaySingleQuote(double quote, String name) {
+		System.out.println("The current quote of " + name + " stock is: " + quote + " Dollar.");
 	}
 }
