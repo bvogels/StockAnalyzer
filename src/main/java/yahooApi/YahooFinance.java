@@ -2,6 +2,7 @@ package yahooApi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import stockanalyzer.ui.UserInterface;
 import yahooApi.beans.Asset;
 import yahooApi.beans.YahooResponse;
 
@@ -22,7 +23,7 @@ public class YahooFinance {
 
     /* This method requests data from the API. It is returned in form of a string. A list of Strings
     * is passed to the method which consists of tickers. */
-    public String requestData(List<String> tickers) {
+    public String requestData(List<String> tickers) throws IOException {
         //TODO improve Error Handling
 
         /* The list of tickers is converted to a comma separated list. */
@@ -41,7 +42,7 @@ public class YahooFinance {
             /* Attempt to pass the query string to the URL object. */
             obj = new URL(query);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            UserInterface.errors(e);
         }
 
         /* An HttpURLConnection object con is created */
@@ -61,7 +62,7 @@ public class YahooFinance {
             }
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            UserInterface.errors(e);
         }
 
         /* The response is returned as a string.*/
@@ -79,7 +80,7 @@ public class YahooFinance {
 
     /* This method is currently not used */
 
-    public void fetchAssetName(Asset asset) {
+    public void fetchAssetName(Asset asset) throws IOException {
         YahooFinance yahoo = new YahooFinance();
         List<String> symbols = new ArrayList<>();
         symbols.add(asset.getSymbol());
@@ -104,7 +105,7 @@ public class YahooFinance {
     }
 
 
-    public YahooResponse getCurrentData(List<String> tickers) {
+    public YahooResponse getCurrentData(List<String> tickers) throws IOException {
         String jsonResponse = requestData(tickers);
         ObjectMapper objectMapper = new ObjectMapper();
         YahooResponse result = null;

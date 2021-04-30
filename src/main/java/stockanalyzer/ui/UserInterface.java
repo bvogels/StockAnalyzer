@@ -4,7 +4,9 @@ package stockanalyzer.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 
+import org.h2.engine.User;
 import stockanalyzer.ctrl.Controller;
 
 public class UserInterface 
@@ -18,15 +20,15 @@ public class UserInterface
 	stock indices of Twitter (TWTR), Ebay and Kraft Heinz Company (KHC).
 	 */
 
-	public void getDataFromCtrl1(){
+	public void getDataFromCtrl1() throws IOException {
 		ctrl.process("TWTR");
 	}
 
-	public void getDataFromCtrl2(){
+	public void getDataFromCtrl2() throws IOException {
 		ctrl.process("EBAY");
 	}
 
-	public void getDataFromCtrl3(){
+	public void getDataFromCtrl3() throws IOException {
 		ctrl.process("KHC");
 
 	}
@@ -47,9 +49,27 @@ public class UserInterface
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitle("Choose an option:");
-		menu.insert("a", "Twitter (TWTR)", this::getDataFromCtrl1);
-		menu.insert("b", "ebay (EBAY)", this::getDataFromCtrl2);
-		menu.insert("c", "Kraft Heinz Company (KHC)", this::getDataFromCtrl3);
+		menu.insert("a", "Twitter (TWTR)", () -> {
+			try {
+				getDataFromCtrl1();
+			} catch (IOException e) {
+				UserInterface.errors(e);
+			}
+		});
+		menu.insert("b", "ebay (EBAY)", () -> {
+			try {
+				getDataFromCtrl2();
+			} catch (IOException e) {
+				UserInterface.errors(e);
+			}
+		});
+		menu.insert("c", "Kraft Heinz Company (KHC)", () -> {
+			try {
+				getDataFromCtrl3();
+			} catch (IOException e) {
+				UserInterface.errors(e);
+			}
+		});
 		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
 		menu.insert("z", "Choice User Input:",this::getDataFromCtrl4);
 		menu.insert("q", "Quit", null);
@@ -102,7 +122,20 @@ public class UserInterface
 		return number;
 	}
 
-	public static void displaySingleQuote(double quote, String name) {
+	public static void displaySingleQuote(double quote, String name, double lastFiftyDays, double change) {
 		System.out.println("The current quote of " + name + " stock is: " + quote + " Dollar.");
+		System.out.println("The average within the last 50 days was " + lastFiftyDays + ". The means the average change is " + change + " .");
+	}
+
+	public static void displayYearlyAverage(double median, String name) {
+		DecimalFormat decimalFormat = new DecimalFormat("#.00");
+		System.out.println("The average value of " + name + " is " + decimalFormat.format(median) + ".");
+	}
+
+	public static void errors(Exception e) {
+		System.out.println("There was an unknown error. Check your internet connection. Going back to menu");
+		System.out.println("System message: "+ e);
+		UserInterface ui = new UserInterface();
+		ui.start();
 	}
 }
