@@ -1,15 +1,19 @@
 package stockanalyzer.ui;
 
 
+import stockanalyzer.ctrl.Controller;
+import stockanalyzer.downloader.Downloader;
+import stockanalyzer.downloader.ParallelDownloader;
+import stockanalyzer.downloader.SequentialDownloader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 
-import org.h2.engine.User;
-import stockanalyzer.ctrl.Controller;
-
-public class UserInterface 
+public class UserInterface
 {
 
 	private Controller ctrl = new Controller(); // creates a new Controller ctrl
@@ -21,15 +25,21 @@ public class UserInterface
 	 */
 
 	public void getDataFromCtrl1() throws IOException {
-		ctrl.process("TWTR");
+		List<String> tickers = Arrays.asList("TWTR", "EBAY", "KHC");
+		Downloader sd = new SequentialDownloader();
+		ctrl.process(tickers, sd);
 	}
 
 	public void getDataFromCtrl2() throws IOException {
-		ctrl.process("EBAY");
+		List<String> tickers = Arrays.asList("TSLA", "FB", "VTRS");
+		Downloader pd = new ParallelDownloader();
+		ctrl.process(tickers, pd);
 	}
 
 	public void getDataFromCtrl3() throws IOException {
-		ctrl.process("KHC");
+		List<String> tickers = Arrays.asList("BBY", "AMZN", "COIN");
+		Downloader sd = new SequentialDownloader();
+		ctrl.process(tickers, sd);
 
 	}
 	public void getDataFromCtrl4(){
@@ -49,29 +59,29 @@ public class UserInterface
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitle("Choose an option:");
-		menu.insert("a", "Twitter (TWTR)", () -> {
+		menu.insert("a", "Twitter, Ebay, Kraft/Heinz Company (Sequential Download)", () -> {
 			try {
 				getDataFromCtrl1();
 			} catch (IOException e) {
 				UserInterface.errors(e);
 			}
 		});
-		menu.insert("b", "ebay (EBAY)", () -> {
+		menu.insert("b", "Tesla, Facebook, Viatris (Parallel Download)", () -> {
 			try {
 				getDataFromCtrl2();
 			} catch (IOException e) {
 				UserInterface.errors(e);
 			}
 		});
-		menu.insert("c", "Kraft Heinz Company (KHC)", () -> {
+		menu.insert("c", "Best Buy, Amazon, Coinbase (Sequential Download)", () -> {
 			try {
 				getDataFromCtrl3();
 			} catch (IOException e) {
 				UserInterface.errors(e);
 			}
 		});
-		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
-		menu.insert("z", "Choice User Input:",this::getDataFromCtrl4);
+		menu.insert("s", "Currently unused:",this::getDataForCustomInput);
+		menu.insert("p", "Currently unused:",this::getDataFromCtrl4);
 		menu.insert("q", "Quit", null);
 		/* The thread becomes the value of an option. If it is null, the connection
 		is closed and the program terminates. */

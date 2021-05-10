@@ -1,41 +1,46 @@
 package stockanalyzer.ctrl;
 
-import org.h2.engine.User;
-import org.json.JSONObject;
+import stockanalyzer.downloader.Downloader;
 import stockanalyzer.ui.UserInterface;
 import yahooApi.YahooFinance;
-import yahooApi.beans.Quote;
 import yahooApi.beans.QuoteResponse;
 import yahooApi.beans.Result;
 import yahooApi.beans.YahooResponse;
 import yahoofinance.Stock;
-import yahoofinance.histquotes.HistoricalQuote;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
-import java.util.stream.Stream;
-
-import static java.lang.Math.round;
 
 public class Controller {
 
 
 	// Method process, takes a string as input.
 
-	public void process(String ticker) throws IOException {
-		System.out.println("Start process");
-		singleQuote(ticker);
-		yearlyAverage(ticker);
+	public void process(List<String> ticker, Downloader downloadType) throws IOException {
+		for (String t : ticker) {
+			System.out.println("Start process");
+			//singleQuote(t);
+			//yearlyAverage(t);
+			downloadTickers(ticker, downloadType);
+		}
 
 		//TODO implement Error handling 
 
 		//TODO implement methods for
 
 		/* I think the data type we are looking for here is the YahooResponse.*/
+	}
+
+	public void downloadTickers(List<String> ticker, Downloader d) {
+		long startTime = System.nanoTime();
+
+		d.process(ticker);
+
+		long endTime = System.nanoTime();
+
+		long totalTime = endTime - startTime;
+		System.out.println("Execution time: " + totalTime/100000);
 	}
 
 	private void singleQuote(String ticker) throws IOException {
